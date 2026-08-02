@@ -1,29 +1,6 @@
-"""
-text_analysis.py
------------------
-Rule-based phishing text analyzer for PhishGuard.
-
-This module does NOT use AI/ML. It uses simple keyword matching and
-weighted scoring to estimate how "phishing-like" a piece of text is.
-
-Main entry point: analyze_text(text) -> dict
-"""
-
 import re
 from url_analysis import find_urls_in_text, analyze_url
 
-# ---------------------------------------------------------------------------
-# CONFIGURABLE PHISHING INDICATOR DICTIONARY
-# ---------------------------------------------------------------------------
-# Each category has:
-#   - keywords: list of words/phrases to search for (case-insensitive)
-#   - weight: points added to the danger score if ANY keyword in the
-#             category is found (weight is added only once per category)
-#   - label: human-readable name shown in the threat report
-#
-# Feel free to add/remove keywords or tweak weights — this dictionary is
-# the "brain" of the rule-based detector.
-# ---------------------------------------------------------------------------
 
 PHISHING_INDICATORS = {
     "urgent_language": {
@@ -165,9 +142,7 @@ PHISHING_INDICATORS = {
     },
 }
 
-# Weight added if one or more email addresses are found inside the text
 EMAIL_PRESENCE_WEIGHT = 5
-# Weight added per suspicious URL detected inside the pasted text (see url_analysis.py)
 URL_IN_TEXT_MAX_WEIGHT = 20
 
 EMAIL_REGEX = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
@@ -220,7 +195,6 @@ def analyze_text(raw_text):
     detected_indicators = []
     matched_keywords = {}
 
-    # 1. Keyword-category scan
     for category_key, category in PHISHING_INDICATORS.items():
         hits = _find_keyword_hits(text_lower, category["keywords"])
         if hits:
@@ -228,14 +202,12 @@ def analyze_text(raw_text):
             detected_indicators.append(category["label"])
             matched_keywords[category["label"]] = hits
 
-    # 2. Email address detection
     emails_found = EMAIL_REGEX.findall(text)
     if emails_found:
         score += EMAIL_PRESENCE_WEIGHT
         detected_indicators.append("Email Address Present")
         result["emails_found"] = emails_found
 
-    # 3. URL detection inside text (delegate scoring to url_analysis module)
     urls = find_urls_in_text(text)
     url_results = []
     if urls:
@@ -244,15 +216,11 @@ def analyze_text(raw_text):
             url_result = analyze_url(u)
             url_results.append(url_result)
             highest_url_score = max(highest_url_score, url_result["danger_score"])
-
-        # Add a capped contribution from the worst URL found, so text + URL
-        # scoring doesn't runaway past 100 too easily.
         url_contribution = min(URL_IN_TEXT_MAX_WEIGHT, round(highest_url_score * 0.3))
         score += url_contribution
         detected_indicators.append("Suspicious URL Found in Message")
         result["urls_found"] = url_results
 
-    # Cap score at 100
     score = min(100, score)
 
     result["danger_score"] = score
@@ -307,7 +275,6 @@ def get_recommendations(detected_indicators):
         if indicator in mapping:
             recs.add(mapping[indicator])
 
-    # Always include general baseline advice
     recs.add("Enable Two-Factor Authentication (2FA) on your important accounts.")
     recs.add("When in doubt, delete the suspicious message or report it.")
 
