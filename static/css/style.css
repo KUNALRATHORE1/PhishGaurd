@@ -1,8 +1,3 @@
-/* =========================================================
-   PhishGuard Stylesheet
-   Theme: Cybersecurity — Dark Blue / White / Light Blue / Red / Green
-========================================================= */
-
 :root {
     --dark-blue: #0a1930;
     --deep-blue: #10254a;
@@ -45,8 +40,6 @@ a {
     text-decoration: none;
     color: inherit;
 }
-
-/* ================= NAVBAR ================= */
 
 .navbar {
     background: var(--dark-blue);
@@ -91,7 +84,6 @@ a {
     color: var(--light-blue);
 }
 
-/* ================= FLASH MESSAGES ================= */
 
 .flash-container {
     max-width: 900px;
@@ -109,7 +101,6 @@ a {
     font-weight: 500;
 }
 
-/* ================= HERO ================= */
 
 .hero {
     background: linear-gradient(135deg, var(--dark-blue), var(--mid-blue));
@@ -141,7 +132,6 @@ a {
     font-size: 1.02rem;
 }
 
-/* ================= CARDS ================= */
 
 .cards-section {
     padding: 3rem 1.5rem;
@@ -192,7 +182,6 @@ a {
     font-size: 0.95rem;
 }
 
-/* ================= FORMS ================= */
 
 .forms-section {
     padding: 0 1.5rem 3rem;
@@ -268,7 +257,6 @@ textarea:focus, input[type="text"]:focus {
     transform: translateY(-2px);
 }
 
-/* Drag and Drop Zone */
 
 .dropzone {
     border: 2px dashed #a9c5e0;
@@ -315,7 +303,6 @@ textarea:focus, input[type="text"]:focus {
     display: none !important;
 }
 
-/* ================= HOW IT WORKS ================= */
 
 .how-it-works {
     background: var(--white);
@@ -358,7 +345,6 @@ textarea:focus, input[type="text"]:focus {
     margin: 0 auto 0.8rem;
 }
 
-/* ================= RESULT PAGE ================= */
 
 .result-section {
     padding: 2.5rem 1.5rem 4rem;
@@ -537,7 +523,6 @@ textarea:focus, input[type="text"]:focus {
     margin-top: 1rem;
 }
 
-/* ================= ABOUT PAGE ================= */
 
 .about-section {
     padding: 3rem 1.5rem;
@@ -584,7 +569,6 @@ textarea:focus, input[type="text"]:focus {
     margin-top: 1.5rem;
 }
 
-/* ================= 404 PAGE ================= */
 
 .error-section {
     display: flex;
@@ -613,7 +597,6 @@ textarea:focus, input[type="text"]:focus {
     margin-bottom: 1.5rem;
 }
 
-/* ================= LOADING SPINNER ================= */
 
 .loading-overlay {
     position: fixed;
@@ -646,7 +629,6 @@ textarea:focus, input[type="text"]:focus {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ================= FOOTER ================= */
 
 .footer {
     background: var(--dark-blue);
@@ -673,7 +655,6 @@ textarea:focus, input[type="text"]:focus {
     font-size: 0.78rem !important;
 }
 
-/* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {
     .cards-container {
