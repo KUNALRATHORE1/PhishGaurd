@@ -174,8 +174,7 @@ To stop the server, press `CTRL + C` in the terminal.
 
 ## Screenshots
 
-![Uploading Screenshot 2026-08-02 180409.png…]()
-
+https://github.com/KUNALRATHORE1/PhishGaurd/blob/main/Screenshot%202026-08-02%20180409.png?raw=true
 
 ## Error Handling
 
