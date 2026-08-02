@@ -174,16 +174,8 @@ To stop the server, press `CTRL + C` in the terminal.
 
 ## Screenshots
 
-> _Add your own screenshots here after running the app locally, e.g.:_
+![Uploading Screenshot 2026-08-02 180409.png…]()
 
-```
-docs/screenshots/home-page.png
-docs/screenshots/text-analysis-result.png
-docs/screenshots/url-analysis-result.png
-docs/screenshots/screenshot-upload.png
-```
-
----
 
 ## Error Handling
 
