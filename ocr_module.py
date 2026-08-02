@@ -1,16 +1,5 @@
-"""
-ocr_module.py
---------------
-Handles text extraction from uploaded screenshots using EasyOCR.
-
-EasyOCR is loaded lazily (only when first needed) because model
-initialization is slow — this keeps Flask's startup fast.
-"""
-
 import os
 from PIL import Image
-
-# The EasyOCR reader is expensive to create, so we build it once and reuse it.
 _reader = None
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "bmp", "webp"}
@@ -28,8 +17,7 @@ def _get_reader():
     """Lazily initialize and cache the EasyOCR reader (English)."""
     global _reader
     if _reader is None:
-        import easyocr  # imported here so the app can still start if easyocr
-                         # is not yet installed / is still downloading models
+        import easyocr  
         _reader = easyocr.Reader(["en"], gpu=False)
     return _reader
 
@@ -53,7 +41,6 @@ def extract_text_from_image(image_path):
         result["error"] = "Uploaded image could not be found on the server."
         return result
 
-    # Validate that the file is actually a readable image before running OCR
     try:
         with Image.open(image_path) as img:
             img.verify()
