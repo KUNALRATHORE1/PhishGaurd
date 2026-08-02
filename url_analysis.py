@@ -1,24 +1,5 @@
-"""
-url_analysis.py
------------------
-Rule-based URL risk analyzer for PhishGuard.
-
-This module inspects the STRUCTURE of a URL (not its live content — PhishGuard
-never visits the URL) and looks for patterns commonly associated with
-phishing links. No AI/ML is used.
-
-Main entry points:
-    analyze_url(url)          -> dict with score + indicators for a single URL
-    find_urls_in_text(text)   -> list of URLs found inside a block of text
-"""
-
 import re
 from urllib.parse import urlparse
-
-# ---------------------------------------------------------------------------
-# CONFIGURATION
-# ---------------------------------------------------------------------------
-
 URL_REGEX = re.compile(
     r"(?:(?:https?://)|(?:www\.))[^\s<>\"']+", re.IGNORECASE
 )
@@ -40,8 +21,6 @@ SUSPICIOUS_WORDS = [
     "suspend", "billing", "support",
 ]
 
-# A short list of commonly-impersonated brand names, used only to check for
-# LOOK-ALIKE patterns (brand name + extra characters/words) not exact matches.
 COMMON_BRANDS = [
     "paypal", "amazon", "google", "microsoft", "apple", "facebook", "instagram",
     "netflix", "bankofamerica", "chase", "wellsfargo", "hdfc", "icici", "sbi",
@@ -56,7 +35,6 @@ def find_urls_in_text(text):
     if not text:
         return []
     matches = URL_REGEX.findall(text)
-    # Strip common trailing punctuation
     cleaned = [m.rstrip(").,;!?\"'") for m in matches]
     return cleaned
 
@@ -65,7 +43,6 @@ def _normalize_url(url):
     """Ensure the URL has a scheme so urlparse works correctly."""
     url = url.strip()
     if not re.match(r"^https?://", url, re.IGNORECASE):
-        # If it looks like "www.something.com" or "something.com"
         return "http://" + url
     return url
 
@@ -110,28 +87,23 @@ def analyze_url(raw_url):
     score = 0
     indicators = []
 
-    # 1. Protocol check (HTTP vs HTTPS)
     if parsed.scheme == "http":
         score += 10
         indicators.append("Uses insecure HTTP instead of HTTPS")
 
-    # 2. URL length
     if len(normalized) > 75:
         score += 10
         indicators.append("Unusually long URL")
 
-    # 3. IP address as hostname
     if IP_ADDRESS_REGEX.match(hostname):
         score += 20
         indicators.append("URL uses a raw IP address instead of a domain name")
 
-    # 4. Number of dots / subdomains
     dot_count = hostname.count(".")
     if dot_count >= 3:
         score += 10
         indicators.append("Multiple subdomains detected")
 
-    # 5. Number of hyphens in hostname
     hyphen_count = hostname.count("-")
     if hyphen_count >= 2:
         score += 10
@@ -140,27 +112,23 @@ def analyze_url(raw_url):
         score += 5
         indicators.append("Hyphen present in domain name")
 
-    # 6. Number of digits in hostname
     digit_count = sum(c.isdigit() for c in hostname)
     if digit_count >= 3:
         score += 10
         indicators.append("Excessive numbers in domain name")
 
-    # 7. Shortened URL services
     for shortener in SHORTENER_DOMAINS:
         if shortener in hostname:
             score += 15
             indicators.append("Uses a URL shortening service (destination is hidden)")
             break
 
-    # 8. Suspicious top-level domain
     for tld in SUSPICIOUS_TLDS:
         if hostname.endswith(tld):
             score += 15
             indicators.append(f"Uses a top-level domain often associated with spam ({tld})")
             break
 
-    # 9. Suspicious keywords in full URL
     full_url_lower = normalized.lower()
     matched_words = [w for w in SUSPICIOUS_WORDS if w in full_url_lower]
     if matched_words:
@@ -169,9 +137,7 @@ def analyze_url(raw_url):
             "Contains suspicious keywords: " + ", ".join(sorted(set(matched_words))[:5])
         )
 
-    # 10. Basic brand impersonation pattern check
-    # Looks for a brand name combined with extra characters/digits/hyphens
-    # rather than appearing as the actual registered domain.
+    
     domain_parts = hostname.split(".")
     root_domain = domain_parts[-2] if len(domain_parts) >= 2 else hostname
     for brand in COMMON_BRANDS:
@@ -182,7 +148,6 @@ def analyze_url(raw_url):
             )
             break
 
-    # 11. Special / unusual characters
     if re.search(r"[@%]", normalized):
         score += 10
         indicators.append("Contains unusual special characters (@ or %)")
