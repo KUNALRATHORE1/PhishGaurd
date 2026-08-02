@@ -174,8 +174,7 @@ To stop the server, press `CTRL + C` in the terminal.
 
 ## Screenshots
 
-https://github.com/KUNALRATHORE1/PhishGaurd/blob/main/Screenshot%202026-08-02%20180409.png?raw=true
-
+![image alt](Screenshot 2026-08-02 180409.png)
 ## Error Handling
 
 PhishGuard handles the following gracefully with friendly messages (no stack traces shown to users):
