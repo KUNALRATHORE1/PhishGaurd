@@ -1,26 +1,12 @@
-/* =========================================================
-   PhishGuard Frontend JavaScript
-   Handles: card selection, drag-and-drop upload, image preview,
-   character counter, and loading spinner.
-========================================================= */
-
 document.addEventListener("DOMContentLoaded", function () {
-
-    // ---------------------------------------------------
-    // 1. Card selection -> show corresponding form
-    // ---------------------------------------------------
     const optionCards = document.querySelectorAll(".option-card");
     const forms = document.querySelectorAll(".analysis-form");
 
     optionCards.forEach(function (card) {
         card.addEventListener("click", function () {
             const targetId = card.getAttribute("data-target");
-
-            // Toggle active state on cards
             optionCards.forEach(function (c) { c.classList.remove("active"); });
             card.classList.add("active");
-
-            // Show only the selected form
             forms.forEach(function (form) {
                 if (form.id === targetId) {
                     form.classList.remove("hidden");
@@ -32,9 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ---------------------------------------------------
-    // 2. Character counter for text analysis
-    // ---------------------------------------------------
     const messageTextarea = document.getElementById("message_text");
     const charCount = document.getElementById("char-count");
 
@@ -44,9 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ---------------------------------------------------
-    // 3. Drag-and-drop screenshot upload + image preview
-    // ---------------------------------------------------
     const dropzone = document.getElementById("dropzone");
     const fileInput = document.getElementById("file-input");
     const dropzoneContent = document.getElementById("dropzone-content");
@@ -95,9 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
         reader.readAsDataURL(file);
     }
 
-    // ---------------------------------------------------
-    // 4. Loading spinner on form submit
-    // ---------------------------------------------------
     const loadingOverlay = document.getElementById("loading-overlay");
     const analysisForms = document.querySelectorAll(".analysis-form");
 
