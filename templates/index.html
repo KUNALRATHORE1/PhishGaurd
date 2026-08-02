@@ -43,7 +43,6 @@
 <section class="forms-section">
     <div class="forms-container">
 
-        <!-- SCREENSHOT FORM -->
         <form id="screenshot-form" class="analysis-form hidden" action="{{ url_for('analyze_screenshot_route') }}" method="POST" enctype="multipart/form-data">
             <h2>📷 Screenshot Analysis</h2>
             <p class="form-help">Upload a clear screenshot. We'll extract the text using OCR and analyze it.</p>
@@ -61,7 +60,6 @@
             <button type="submit" class="btn-primary" id="screenshot-submit">Analyze Screenshot</button>
         </form>
 
-        <!-- TEXT FORM -->
         <form id="text-form" class="analysis-form hidden" action="{{ url_for('analyze_text_route') }}" method="POST">
             <h2>💬 Text Message Analysis</h2>
             <p class="form-help">Paste the suspicious message below.</p>
@@ -73,7 +71,6 @@
             <button type="submit" class="btn-primary">Analyze Text</button>
         </form>
 
-        <!-- URL FORM -->
         <form id="url-form" class="analysis-form hidden" action="{{ url_for('analyze_url_route') }}" method="POST">
             <h2>🔗 URL Analysis</h2>
             <p class="form-help">Paste the website link you want to check.</p>
