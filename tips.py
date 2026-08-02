@@ -1,10 +1,3 @@
-"""
-tips.py
---------
-A bank of general cybersecurity tips shown to users on the result page.
-Five random tips are displayed each time a result page is generated.
-"""
-
 import random
 
 CYBERSECURITY_TIPS = [
