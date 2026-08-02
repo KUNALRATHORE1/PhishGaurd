@@ -1,19 +1,3 @@
-"""
-app.py
--------
-Main Flask application for PhishGuard — a rule-based phishing risk
-assessment tool.
-
-Routes:
-    GET  /                -> Home page
-    POST /analyze/text    -> Analyze pasted text message
-    POST /analyze/url     -> Analyze pasted URL
-    POST /analyze/screenshot -> Analyze uploaded screenshot (OCR + text analysis)
-    GET  /about           -> About page
-    404 handler           -> Custom 404 page
-    500 handler           -> Custom friendly error page
-"""
-
 import os
 import uuid
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -23,9 +7,6 @@ from url_analysis import analyze_url, get_url_recommendations
 from ocr_module import extract_text_from_image, allowed_file
 from tips import get_random_tips
 
-# ---------------------------------------------------------------------------
-# APP CONFIGURATION
-# ---------------------------------------------------------------------------
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
@@ -38,10 +19,6 @@ app.secret_key = "phishguard-dev-secret-key"  # fine for a local educational pro
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
-# ---------------------------------------------------------------------------
-# ROUTES
-# ---------------------------------------------------------------------------
 
 @app.route("/")
 def home():
@@ -118,7 +95,6 @@ def analyze_screenshot_route():
         flash("Invalid file type. Please upload a PNG, JPG, JPEG, BMP, or WEBP image.")
         return redirect(url_for("home"))
 
-    # Save with a random filename to avoid collisions / path issues
     extension = file.filename.rsplit(".", 1)[1].lower()
     saved_filename = f"{uuid.uuid4().hex}.{extension}"
     saved_path = os.path.join(app.config["UPLOAD_FOLDER"], saved_filename)
@@ -131,7 +107,6 @@ def analyze_screenshot_route():
 
     ocr_result = extract_text_from_image(saved_path)
 
-    # Clean up the uploaded file after processing (we don't need to keep it)
     try:
         os.remove(saved_path)
     except OSError:
@@ -153,11 +128,6 @@ def analyze_screenshot_route():
         recommendations=recommendations,
         tips=get_random_tips(5),
     )
-
-
-# ---------------------------------------------------------------------------
-# ERROR HANDLERS
-# ---------------------------------------------------------------------------
 
 @app.errorhandler(404)
 def page_not_found(e):
