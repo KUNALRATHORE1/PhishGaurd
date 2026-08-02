@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Result - PhishGuard{% endblock %}
+
+{% block content %}
+<section class="result-section">
+    <div class="result-container">
+
+        <h1>Analysis Report</h1>
+
+        {% set score = analysis.danger_score %}
+        {% set level = analysis.risk_level %}
+        {% if level == "Safe" %}
+            {% set bar_class = "bar-safe" %}
+            {% set badge_class = "badge-safe" %}
+        {% elif level == "Low Risk" %}
+            {% set bar_class = "bar-low" %}
+            {% set badge_class = "badge-low" %}
+        {% elif level == "Medium Risk" %}
+            {% set bar_class = "bar-medium" %}
+            {% set badge_class = "badge-medium" %}
+        {% else %}
+            {% set bar_class = "bar-high" %}
+            {% set badge_class = "badge-high" %}
+        {% endif %}
+
+        <div class="score-card">
+            <div class="score-number {{ badge_class }}">{{ score }}%</div>
+            <div class="risk-badge {{ badge_class }}">{{ level }}</div>
+
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill {{ bar_class }}" style="width: {{ score }}%;"></div>
+            </div>
+
+            <p class="disclaimer-text">
+                This is a heuristic risk assessment based on detected patterns, not a definitive
+                phishing determination. Use your own judgement.
+            </p>
+        </div>
+
+        <div class="result-grid">
+
+            <div class="result-panel">
+                <h3>📋 Detected Indicators</h3>
+                {% if analysis.detected_indicators %}
+                    <ul class="indicator-list">
+                        {% for indicator in analysis.detected_indicators %}
+                            <li>⚠️ {{ indicator }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="no-indicators">No phishing indicators were detected.</p>
+                {% endif %}
+            </div>
+
+            <div class="result-panel">
+                <h3>✅ Recommendations</h3>
+                <ul class="recommendation-list">
+                    {% for rec in recommendations %}
+                        <li>{{ rec }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="result-panel full-width">
+            {% if input_type == "screenshot" %}
+                <h3>🔎 Extracted Text (via OCR)</h3>
+                <div class="text-box">{{ extracted_text }}</div>
+            {% elif input_type == "text" %}
+                <h3>🔎 Analyzed Text</h3>
+                <div class="text-box">{{ analyzed_text }}</div>
+            {% elif input_type == "url" %}
+                <h3>🔎 Analyzed URL</h3>
+                <div class="text-box">{{ analyzed_url }}</div>
+            {% endif %}
+        </div>
+
+        {% if analysis.urls_found %}
+        <div class="result-panel full-width">
+            <h3>🔗 URLs Found Inside Message</h3>
+            {% for url_result in analysis.urls_found %}
+                <div class="sub-url-card">
+                    <strong>{{ url_result.url }}</strong>
+                    <span class="mini-badge">{{ url_result.risk_level }} ({{ url_result.danger_score }}%)</span>
+                    <ul class="indicator-list">
+                        {% for ind in url_result.detected_indicators %}
+                            <li>⚠️ {{ ind }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="result-panel full-width">
+            <h3>💡 Cybersecurity Tips</h3>
+            <ul class="tips-list">
+                {% for tip in tips %}
+                    <li>{{ tip }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="action-row">
+            <a href="{{ url_for('home') }}" class="btn-primary">🔄 Analyze Another</a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}PhishGuard - Phishing Risk Assessment{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-container">
+        <h1>🛡️ PhishGuard</h1>
+        <p class="hero-subtitle">Rule-Based Phishing Risk Assessment Tool</p>
+        <p class="hero-description">
+            Paste a suspicious message, upload a screenshot, or check a website link.
+            PhishGuard scans it against known phishing patterns and gives you an
+            instant risk assessment &mdash; no AI, no data sent to third parties,
+            fully transparent rule-based logic.
+        </p>
+    </div>
+</section>
+
+<section class="cards-section">
+    <div class="cards-container">
+
+        <div class="option-card" data-target="screenshot-form">
+            <div class="card-icon">📷</div>
+            <h3>Analyze Screenshot</h3>
+            <p>Upload a screenshot of an email, SMS, or chat message.</p>
+        </div>
+
+        <div class="option-card" data-target="text-form">
+            <div class="card-icon">💬</div>
+            <h3>Analyze Text</h3>
+            <p>Paste a suspicious text message or email content directly.</p>
+        </div>
+
+        <div class="option-card" data-target="url-form">
+            <div class="card-icon">🔗</div>
+            <h3>Analyze URL</h3>
+            <p>Paste a website link to check for suspicious structure.</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="forms-section">
+    <div class="forms-container">
+
+        <!-- SCREENSHOT FORM -->
+        <form id="screenshot-form" class="analysis-form hidden" action="{{ url_for('analyze_screenshot_route') }}" method="POST" enctype="multipart/form-data">
+            <h2>📷 Screenshot Analysis</h2>
+            <p class="form-help">Upload a clear screenshot. We'll extract the text using OCR and analyze it.</p>
+
+            <div class="dropzone" id="dropzone">
+                <input type="file" name="screenshot" id="file-input" accept=".png,.jpg,.jpeg,.bmp,.webp" hidden>
+                <div id="dropzone-content">
+                    <span class="dropzone-icon">⬆️</span>
+                    <p>Drag &amp; drop your screenshot here, or <span class="browse-link">browse</span></p>
+                    <p class="dropzone-hint">PNG, JPG, JPEG, BMP, WEBP &middot; Max 8MB</p>
+                </div>
+                <img id="image-preview" class="hidden" alt="Preview of uploaded screenshot">
+            </div>
+
+            <button type="submit" class="btn-primary" id="screenshot-submit">Analyze Screenshot</button>
+        </form>
+
+        <!-- TEXT FORM -->
+        <form id="text-form" class="analysis-form hidden" action="{{ url_for('analyze_text_route') }}" method="POST">
+            <h2>💬 Text Message Analysis</h2>
+            <p class="form-help">Paste the suspicious message below.</p>
+
+            <textarea name="message_text" id="message_text" rows="8" maxlength="5000"
+                placeholder="Dear Customer, your account has been blocked. Verify immediately by clicking the link below..."></textarea>
+            <div class="char-counter"><span id="char-count">0</span> / 5000 characters</div>
+
+            <button type="submit" class="btn-primary">Analyze Text</button>
+        </form>
+
+        <!-- URL FORM -->
+        <form id="url-form" class="analysis-form hidden" action="{{ url_for('analyze_url_route') }}" method="POST">
+            <h2>🔗 URL Analysis</h2>
+            <p class="form-help">Paste the website link you want to check.</p>
+
+            <input type="text" name="url_input" id="url_input" placeholder="http://example-login.xyz">
+
+            <button type="submit" class="btn-primary">Analyze URL</button>
+        </form>
+
+    </div>
+</section>
+
+<section class="how-it-works">
+    <div class="how-it-works-container">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <p>Choose an input method: screenshot, text, or URL.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <p>PhishGuard scans the content against a rule-based dictionary of phishing indicators.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <p>Get a Danger Score, risk level, detected indicators, and safety recommendations.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p>Analyzing...</p>
+</div>
+{% endblock %}

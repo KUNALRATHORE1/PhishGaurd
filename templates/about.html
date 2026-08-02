@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}About - PhishGuard{% endblock %}
+
+{% block content %}
+<section class="about-section">
+    <div class="about-container">
+        <h1>About PhishGuard</h1>
+
+        <p>
+            PhishGuard is an educational, rule-based phishing risk assessment tool built with
+            Python and Flask. It helps users get a quick sense of how "phishing-like" a message,
+            screenshot, or website link appears &mdash; based entirely on transparent, explainable
+            heuristics rather than AI or machine learning.
+        </p>
+
+        <h2>How the Danger Score Works</h2>
+        <p>
+            Each analysis scans the content against a configurable dictionary of phishing indicators
+            (urgent language, OTP/password requests, banking keywords, prize scams, suspicious URLs,
+            and more). Every matched category adds weighted points to a Danger Score between 0 and 100.
+            The score is then mapped to a risk level:
+        </p>
+        <ul class="about-list">
+            <li><strong>0–25:</strong> Safe</li>
+            <li><strong>26–50:</strong> Low Risk</li>
+            <li><strong>51–75:</strong> Medium Risk</li>
+            <li><strong>76–100:</strong> High Risk</li>
+        </ul>
+
+        <h2>What PhishGuard Does NOT Do</h2>
+        <ul class="about-list">
+            <li>It does not use AI, machine learning, or any paid API.</li>
+            <li>It does not visit or fetch the content of analyzed URLs — only the URL's structure/text is examined.</li>
+            <li>It does not claim definitive phishing detection — results are a risk estimate only.</li>
+            <li>It does not store, share, or transmit your data anywhere — analysis happens locally.</li>
+        </ul>
+
+        <h2>Technology Stack</h2>
+        <ul class="about-list">
+            <li>Python + Flask (backend and routing)</li>
+            <li>EasyOCR (screenshot text extraction)</li>
+            <li>Pillow (image validation)</li>
+            <li>HTML, CSS, JavaScript (frontend)</li>
+        </ul>
+
+        <p class="disclaimer-box">
+            <strong>Disclaimer:</strong> PhishGuard is intended for educational purposes only.
+            It is a student/portfolio project and should not be relied upon as a sole method of
+            phishing detection. Always exercise your own judgement and verify suspicious
+            communications through official channels.
+        </p>
+    </div>
+</section>
+{% endblock %}
