@@ -15,7 +15,7 @@ MAX_UPLOAD_SIZE_MB = 8
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_SIZE_MB * 1024 * 1024
-app.secret_key = "phishguard-dev-secret-key"  # fine for a local educational project
+app.secret_key = "phishguard-dev-secret-key"  
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
